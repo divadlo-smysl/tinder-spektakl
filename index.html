@@ -652,43 +652,28 @@
     <div class="section-label" style="text-align:center">Фотографии</div>
     <h2 class="section-title" style="text-align:center; max-width:none">Взгляд за кулисы</h2>
 
-    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:40px;">
-      <div class="g-item" style="height:280px; grid-column: 1 / 3;">
-        <img src="9.JPG" alt="Труппа театра SMYSL">
+    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-top:40px; max-width:900px; margin-left:auto; margin-right:auto;">
+      <div class="g-item lb-trigger" data-src="0.JPG" style="height:320px; cursor:zoom-in;">
+        <img src="0.JPG" alt="Спектакль" style="object-position: center 60%;">
       </div>
-      <div class="g-item" style="height:280px;">
-        <img src="5.JPG" alt="Спектакль">
+      <div class="g-item lb-trigger" data-src="8.JPG" style="height:320px; cursor:zoom-in;">
+        <img src="8.JPG" alt="Спектакль" style="object-position: center 20%;">
       </div>
-      <div class="g-item" style="height:220px;">
-        <img src="4.JPG" alt="Спектакль">
+      <div class="g-item lb-trigger" data-src="2.JPG" style="height:320px; cursor:zoom-in;">
+        <img src="2.JPG" alt="Спектакль" style="object-position: center 30%;">
       </div>
-      <div class="g-item" style="height:220px;">
-        <img src="3.JPG" alt="Спектакль">
-      </div>
-      <div class="g-item" style="height:220px;">
-        <img src="2.JPG" alt="Спектакль">
-      </div>
-      <div class="g-item" style="height:220px;">
-        <img src="1.JPG" alt="Спектакль">
-      </div>
-      <div class="g-item" style="height:220px; grid-column: 2 / 4;">
-        <img src="0.JPG" alt="Спектакль">
-      </div>
-      <div class="g-item" style="height:220px;">
-        <img src="7.JPG" alt="Спектакль">
-      </div>
-      <div class="g-item" style="height:220px;">
-        <img src="8.JPG" alt="Спектакль">
-      </div>
-      <div class="g-item" style="height:220px; grid-column: 1 / 3;">
-        <img src="10.JPG" alt="Спектакль">
-      </div>
-      <div class="g-item" style="height:220px;">
-        <img src="b4eadb36-ab30-4ae0-89b4-8b6a1e35f59d.jpeg" alt="Спектакль">
+      <div class="g-item lb-trigger" data-src="1.JPG" style="height:320px; cursor:zoom-in;">
+        <img src="1.JPG" alt="Спектакль" style="object-position: center 40%;">
       </div>
     </div>
   </div>
 </section>
+
+<!-- ── LIGHTBOX ── -->
+<div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:2000; align-items:center; justify-content:center; cursor:zoom-out;">
+  <img id="lb-img" src="" style="max-width:92vw; max-height:92vh; object-fit:contain; box-shadow:0 0 60px rgba(0,0,0,0.8);">
+  <button onclick="closeLB()" style="position:absolute; top:20px; right:28px; background:none; border:none; color:white; font-size:2.5rem; cursor:pointer; line-height:1;">×</button>
+</div>
 
 <!-- ── TICKETS ── -->
 <section class="tickets-section" id="tickets">
@@ -772,9 +757,29 @@
   if (isAndroid) {
     mapLink.href = 'geo:50.0938,14.4567?q=Nekvasilova+625,+Praha+8-Karlin';
   } else if (!/iphone|ipad|ipod/i.test(navigator.userAgent)) {
-    // Desktop — Google Maps
     mapLink.href = 'https://www.google.com/maps/place//data=!4m2!3m1!1s0x470b9359d14e1425:0xafa8fc56d66264cd?sa=X&ved=1t:8290&ictx=111';
   }
+
+  // Lightbox
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+
+  document.querySelectorAll('.lb-trigger').forEach(el => {
+    el.addEventListener('click', () => {
+      lbImg.src = el.dataset.src;
+      lb.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeLB() {
+    lb.style.display = 'none';
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  lb.addEventListener('click', e => { if (e.target === lb) closeLB(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 </script>
 
 <script>
